@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/0xirvan/go-jwt-auth/pkg/logger"
+	"github.com/joho/godotenv"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	if err := godotenv.Load(); err != nil {
+		logger.Log.Fatalln("Error loading .env file")
+	}
+
+	fmt.Println(os.Getenv("foo"))
 }
