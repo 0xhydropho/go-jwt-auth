@@ -109,9 +109,9 @@ func (s *AuthServiceImpl) Login(req LoginRequest) (*AuthResponse, error) {
 	}
 
 	// store refresh token in the database
-	if err := s.refreshTokenRepo.Create(refreshTokenModel); err != nil {
-		logger.Log.Errorf("failed to store refresh token: %v", err)
-		return nil, fmt.Errorf("failed to store refresh token: %w", err)
+	if err := s.refreshTokenRepo.ReplaceToken(refreshTokenModel.UserID, refreshTokenModel); err != nil {
+		logger.Log.Errorf("Failed to replace refresh token: %v", err)
+		return nil, fmt.Errorf("failed to update refresh token: %w", err)
 	}
 
 	return &AuthResponse{
@@ -138,10 +138,7 @@ func (s *AuthServiceImpl) Refresh(refreshTokenString string) (*AuthResponse, err
 		return nil, fmt.Errorf("refresh token expired")
 	}
 
-	logger.Log.Infof("User data from refresh token: ID=%d, Email=%s",
-		refreshToken.User.ID, refreshToken.User.Email)
-
-	tokenPair, newRefreshToken, err := jwt.GenerateTokenPair(&refreshToken.User)
+	tokenPair, refreshTokenModel, err := jwt.GenerateTokenPair(&refreshToken.User)
 	if err != nil {
 		logger.Log.Errorf("failed to generate token pair: %v", err)
 		return nil, fmt.Errorf("failed to generate token pair: %w", err)
@@ -154,14 +151,14 @@ func (s *AuthServiceImpl) Refresh(refreshTokenString string) (*AuthResponse, err
 	}
 
 	// save new refresh token
-	if err := s.refreshTokenRepo.Create(newRefreshToken); err != nil {
+	if err := s.refreshTokenRepo.ReplaceToken(refreshToken.UserID, refreshTokenModel); err != nil {
 		logger.Log.Errorf("failed to store new refresh token: %v", err)
 		return nil, fmt.Errorf("failed to store new refresh token: %w", err)
 	}
 
 	return &AuthResponse{
 		AccessToken:  tokenPair.AccessToken,
-		RefreshToken: newRefreshToken.Token,
+		RefreshToken: refreshTokenModel.Token,
 		ExpiresIn:    AccessExpiresIn,
 		User:         refreshToken.User,
 	}, nil
