@@ -39,7 +39,7 @@ go-jwt-auth/
 │   │   └── user.go              # User model
 │   ├── r## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.epository/
+
 │   │   ├── refresh_token_repository.go  # Refresh token data access
 │   │   └── user_repository.go   # User data access
 │   └── service/
@@ -146,20 +146,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Login: 5 requests per 30 seconds
 - Overall API: Configurable rate limits
-
-## Development
-
-### Run Tests
-
-```bash
-make test
-```
-
-### Clean Build Files
-
-```bash
-make clean
-```
 
 ## Future Improvements
 
