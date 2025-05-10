@@ -74,6 +74,19 @@ func main() {
 		protectedAuthRoutes.POST("/logout", authHandler.Logout)
 	}
 
+	protectedRoutes := v1.Group("profile")
+	protectedRoutes.Use(middleware.AuthMiddleware(userRepo))
+	{
+		protectedRoutes.GET("/me", func(ctx *gin.Context) {
+			user, err := userRepo.FindByID(ctx.GetUint("userID"))
+			if err != nil {
+				ctx.JSON(500, gin.H{"error": "Internal server error"})
+				return
+			}
+			ctx.JSON(200, gin.H{"user": user})
+		})
+	}
+
 	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
