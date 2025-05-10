@@ -10,7 +10,7 @@ import (
 type RefreshTokenRepository interface {
 	Create(token *models.RefreshToken) error
 	FindByToken(token string) (*models.RefreshToken, error)
-	DeleteByUserID(userID string) error
+	DeleteByUserID(userID uint) error
 	DeleteExpired() error
 }
 
@@ -37,7 +37,7 @@ func (r *RefreshTokenRepositoryImpl) FindByToken(token string) (*models.RefreshT
 	return &refreshToken, nil
 }
 
-func (r *RefreshTokenRepositoryImpl) DeleteByUserID(userID string) error {
+func (r *RefreshTokenRepositoryImpl) DeleteByUserID(userID uint) error {
 	return r.DB.Where("user_id = ?", userID).Delete(&models.RefreshToken{}).Error
 }
 
