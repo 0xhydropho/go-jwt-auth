@@ -11,6 +11,7 @@ import (
 	"github.com/0xirvan/go-jwt-auth/internal/repository"
 	"github.com/0xirvan/go-jwt-auth/internal/service"
 	"github.com/0xirvan/go-jwt-auth/pkg/logger"
+	ratelimit "github.com/JGLTechnologies/gin-rate-limit"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -33,6 +34,18 @@ func main() {
 		}
 	}()
 
+	// in mem store for rate limiting
+	store := ratelimit.InMemoryStore(&ratelimit.InMemoryOptions{
+		Rate:  time.Second * 30,
+		Limit: 5,
+	})
+
+	// Rate limiting middleware
+	rateLimit := ratelimit.RateLimiter(store, &ratelimit.Options{
+		ErrorHandler: errorHandler,
+		KeyFunc:      keyFunc,
+	})
+
 	// Init repositories
 	userRepo := repository.NewUserRepository(db)
 	refreshTokenRepo := repository.NewRefreshTokenRepository(db)
@@ -50,8 +63,8 @@ func main() {
 
 	authRoutes := v1.Group("auth")
 	{
-		authRoutes.POST("/register", authHandler.Register)
-		authRoutes.POST("/login", authHandler.Login)
+		authRoutes.POST("/register", rateLimit, authHandler.Register)
+		authRoutes.POST("/login", rateLimit, authHandler.Login)
 		authRoutes.POST("/refresh", authHandler.RefreshToken)
 	}
 
@@ -72,4 +85,13 @@ func main() {
 		logger.Log.Fatalln("Error starting server: ", err)
 	}
 
+}
+
+// utility function to set up rate limiting
+func keyFunc(c *gin.Context) string {
+	return c.ClientIP()
+}
+
+func errorHandler(c *gin.Context, info ratelimit.Info) {
+	c.String(429, "Too many requests. Try again in "+time.Until(info.ResetTime).String())
 }
