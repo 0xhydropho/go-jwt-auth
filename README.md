@@ -64,33 +64,38 @@ go-jwt-auth/
 ### Steps
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/0xirvan/go-jwt-auth.git
-   cd go-jwt-auth
-   ```
+    ```bash
+    git clone https://github.com/0xirvan/go-jwt-auth.git
+    cd go-jwt-auth
+    ```
 
 2. Create your environment file:
-   ```bash
-   cp .env.example .env
-   ```
+    ```bash
+    cp .env.example .env
+    ```
 
 3. Edit the `.env` file with your preferred settings:
-   ```
-   PORT=8080
-   DATABASE_PATH=auth.db
-   JWT_SECRET=your_very_secure_jwt_secret_here
-   REFRESH_SECRET=another_very_secure_refresh_secret_here
-   ```
+    ```
+    PORT=8080
+    DATABASE_PATH=auth.db
+    JWT_SECRET=your_very_secure_jwt_secret_here
+    REFRESH_SECRET=another_very_secure_refresh_secret_here
+    ```
 
-4. Build and run the application:
-   ```bash
-   make run
-   ```
-   
-   Or use Go directly:
-   ```bash
-   go run cmd/api/main.go
-   ```
+4. Install dependencies:
+    ```bash
+    go mod tidy
+    ```
+
+5. Build and run the application:
+    ```bash
+    make run
+    ```
+    
+    Or use Go directly:
+    ```bash
+    go run cmd/api/main.go
+    ```
 
 ## API Endpoints
 
