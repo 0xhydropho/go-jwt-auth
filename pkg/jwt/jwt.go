@@ -54,7 +54,7 @@ func GenerateRefreshToken() (string, time.Time, error) {
 		return "", time.Time{}, fmt.Errorf("refresh token secret key is not set")
 	}
 
-	expiresAt := time.Now().Add(time.Hour * 24 * 7)
+	expiresAt := time.Now().Add(time.Hour * 24 * 7) // Token expires in 7 days
 
 	token := jwt.New(jwt.SigningMethodES256)
 	claims := token.Claims.(jwt.MapClaims)
