@@ -56,7 +56,7 @@ func GenerateRefreshToken() (string, time.Time, error) {
 
 	expiresAt := time.Now().Add(time.Hour * 24 * 7) // Token expires in 7 days
 
-	token := jwt.New(jwt.SigningMethodES256)
+	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["exp"] = expiresAt.Unix()
 	claims["iat"] = time.Now().Unix()

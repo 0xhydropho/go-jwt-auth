@@ -138,6 +138,9 @@ func (s *AuthServiceImpl) Refresh(refreshTokenString string) (*AuthResponse, err
 		return nil, fmt.Errorf("refresh token expired")
 	}
 
+	logger.Log.Infof("User data from refresh token: ID=%d, Email=%s",
+		refreshToken.User.ID, refreshToken.User.Email)
+
 	tokenPair, newRefreshToken, err := jwt.GenerateTokenPair(&refreshToken.User)
 	if err != nil {
 		logger.Log.Errorf("failed to generate token pair: %v", err)

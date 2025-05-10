@@ -30,7 +30,7 @@ func (r *RefreshTokenRepositoryImpl) Create(token *models.RefreshToken) error {
 
 func (r *RefreshTokenRepositoryImpl) FindByToken(token string) (*models.RefreshToken, error) {
 	var refreshToken models.RefreshToken
-	err := r.DB.Where("token = ?", token).First(&refreshToken).Error
+	err := r.DB.Where("token = ?", token).Preload("User").First(&refreshToken).Error
 	if err != nil {
 		return nil, err
 	}
