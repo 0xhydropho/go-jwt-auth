@@ -9,7 +9,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: action/checkout@v4
-
+    - uses: actions/checkout@v4
     - name: Test list dir
       run: ls -lah .*
