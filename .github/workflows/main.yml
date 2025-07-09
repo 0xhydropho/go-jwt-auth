@@ -7,4 +7,9 @@ jobs:
   testing:
     name: testing
     runs-on: self-hosted
-    run: ls
+
+    steps:
+    - uses: action/checkout@v4
+
+    - name: Test list dir
+      run: ls -lah .*
