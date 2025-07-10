@@ -12,7 +12,7 @@ COPY .env.example .env
 COPY . .
 
 ENV GOMAXPROCS=1
-RUN go build -o go-jwt-auth -x ./cmd/api/main.go
+RUN go build -o go-jwt-auth ./cmd/api/main.go
 
 # FINAL IMAGE
 FROM alpine:latest

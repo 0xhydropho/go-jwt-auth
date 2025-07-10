@@ -26,7 +26,7 @@ jobs:
   deploy:
     name: Deploy on K8S
     runs-on: self-hosted
-
+    needs: build
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -39,7 +39,9 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
     - name: Deploy the helm chart
       run: |
-        helm install \
+        helm upgrade go-jwt-auth \
+        helm \
+        --install \ 
         --create-namespace \
         --namespace development \
         --set image=hydropho/go-jwt-auth:${{ github.sha }} \
