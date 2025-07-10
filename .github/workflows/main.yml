@@ -39,9 +39,7 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
     - name: Deploy the helm chart
       run: |
-        helm upgrade go-jwt-auth \
-        helm \
-        --install \ 
+        helm upgrade --install go-jwt-auth . \
         --create-namespace \
         --namespace development \
         --set image=hydropho/go-jwt-auth:${{ github.sha }} \
