@@ -21,7 +21,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: hydropho/go-jwt-auth:${{ GITHUB_SHA }}
+        tags: hydropho/go-jwt-auth:${{ github.sha }}
 
   deploy:
     name: Deploy on K8S
@@ -42,6 +42,6 @@ jobs:
         helm install \
         --create-namespace \
         --namespace development \
-        --set image=hydropho/go-jwt-auth:${{ GITHUB_SHA }} \
+        --set image=hydropho/go-jwt-auth:${{ github.sha }} \
         --set dockerConfigJson.data="\{\"auths\":\{\"ghcr.io\":\{\"username\":\"${{ secrets.DOCKERHUB_USERNAME }}\"\,\"password\":\"${{ secrets.DOCKERHUB_TOKEN }}\"\}\}\}"
 
