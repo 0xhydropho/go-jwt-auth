@@ -39,8 +39,6 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
     - name: Deploy the helm chart
       run: |
-        helm upgrade \
-        ${{ github.event.repository.name }} \
         helm \
         --install \
         --create-namespace \
