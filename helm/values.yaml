@@ -1,4 +1,7 @@
 appName: go-jwt-auth
 containerPort: 8080
+
+image: hydropho/go-jwt-auth:latest
+
 dockerConfigJson:
   secretName: dockerconfigjson
