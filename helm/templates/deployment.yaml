@@ -13,7 +13,7 @@ spec:
       labels:
         app: {{ .Values.appName }}
     spec:
-      container:
+      containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.image | required "image is required"}}
           ports:
