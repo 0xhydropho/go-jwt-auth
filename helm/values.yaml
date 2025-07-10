@@ -1,0 +1,4 @@
+appName: go-jwt-auth
+containerPort: 8080
+dockerConfigJson:
+  secretName: dockerconfigjson

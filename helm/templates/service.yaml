@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIp
+  selector:
+    app: {{ .Values.appName }}
+  ports:
+    - port: {{ .Values.containerPort }}
